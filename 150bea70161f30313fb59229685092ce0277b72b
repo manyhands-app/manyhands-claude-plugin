@@ -1,0 +1,53 @@
+# review 150bea70161f
+
+repo: plugin
+range: a9d0941f6a1e..150bea70161f
+head: 150bea70161f30313fb59229685092ce0277b72b
+slug: fm-175d-plugin-plugin-github-owners
+diff_bytes: 1163
+files: 2
+dirty: no
+inflight: -
+gate: trivial-by-checks
+class: src
+tier: trivial
+tier_reason: trivial
+diff_lines: 6
+warm: no
+warm_from: -
+warm_delta_bytes: -
+cold_reason: -
+claude_model: not asked
+claude_verdict: not asked
+claude_blockers: 0
+claude_notes: 0
+gemini_model: not asked
+gemini_verdict: not asked
+gemini_blockers: 0
+gemini_notes: 0
+gemini_thinking: -
+gemini_toolcalls: -
+gemini_toolcalls_used: -
+claude_cost_usd: -
+claude_prompt_tokens: -
+claude_output_tokens: -
+claude_cache_read_tokens: -
+claude_cache_write_tokens: -
+claude_attempts: 0
+claude_stop: -
+claude_provider: -
+claude_toolcalls: -
+claude_toolcalls_used: -
+partial: no
+gemini_prompt_tokens: -
+gemini_output_tokens: -
+gemini_thinking_tokens: -
+gemini_cost_usd: -
+blockers: 0
+notes: 0
+verdict: trivial-by-checks
+
+---
+
+No model read this change. It was classed trivial by `repo_trivial_class` and landed on
+the repo's own checks: trivial. See ADR 073.
