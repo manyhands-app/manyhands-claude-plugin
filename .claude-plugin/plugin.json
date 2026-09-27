@@ -3,8 +3,8 @@
   "version": "0.2.0",
   "description": "Manyhands in Claude Code: read and change your HQ's tasks, projects, notes and comments as yourself.",
   "author": { "name": "Pavilion Markets", "url": "https://hub.pavilion.markets" },
-  "homepage": "https://github.com/Pavilion-Markets/manyhands-claude-plugin",
-  "repository": "https://github.com/Pavilion-Markets/manyhands-claude-plugin",
+  "homepage": "https://github.com/manyhands-app/manyhands-claude-plugin",
+  "repository": "https://github.com/manyhands-app/manyhands-claude-plugin",
   "license": "MIT",
   "keywords": ["manyhands", "tasks", "mcp"]
 }

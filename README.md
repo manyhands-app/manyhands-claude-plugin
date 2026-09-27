@@ -8,7 +8,7 @@ the tools as you, with the same permissions you have in the app.
 In Claude Code:
 
 ```
-/plugin marketplace add Pavilion-Markets/manyhands-claude-plugin
+/plugin marketplace add manyhands-app/manyhands-claude-plugin
 /plugin install manyhands@manyhands
 ```
 
