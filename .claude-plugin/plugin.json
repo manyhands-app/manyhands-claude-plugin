@@ -1,6 +1,6 @@
 {
   "name": "manyhands",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Manyhands in Claude Code: read and change your HQ's tasks, projects, notes and comments as yourself.",
   "author": { "name": "Pavilion Markets", "url": "https://hub.pavilion.markets" },
   "homepage": "https://github.com/manyhands-app/manyhands-claude-plugin",
