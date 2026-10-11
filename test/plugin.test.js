@@ -1,6 +1,6 @@
 // The plugin has no code, so the test is the manifests: they must parse, agree with each
 // other, point at the hub's MCP door, and every skill must carry the frontmatter Claude Code
-// reads to decide when to load it.
+// reads to decide when to load it. The hooks must be mcp_tool hooks that call only the run tools.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync, existsSync } from "node:fs";
@@ -40,7 +40,7 @@ test("every skill has a SKILL.md whose name matches its directory", () => {
 });
 
 test("no em or en dashes in shipped text", () => {
-  const files = [".claude-plugin/plugin.json", ".claude-plugin/marketplace.json", "README.md",
+  const files = [".claude-plugin/plugin.json", ".claude-plugin/marketplace.json", "README.md", "hooks/hooks.json",
     ...readdirSync(join(ROOT, "skills")).map((d) => `skills/${d}/SKILL.md`)];
   for (const f of files) assert.doesNotMatch(readFileSync(join(ROOT, f), "utf8"), /[–—]/, f);
 });
@@ -65,4 +65,77 @@ test("the main skill carries the safety rules for tool results, the data room an
   assert.match(main, /Never retry `manyhands_dataroom_add_investor` after a success/);
   assert.match(main, /reference like `MH-XXXX-XXXX`, tell the person that reference/);
   assert.match(main, /capability is off, tell the person which setting to turn on in Manyhands\. Do not retry/);
+});
+
+const hooksJson = () => json("hooks/hooks.json");
+const hookList = (event) => hooksJson().hooks[event].flatMap((group) => group.hooks);
+const RUN_EVENTS = ["SessionEnd", "Stop", "SubagentStop", "UserPromptSubmit"];
+
+// B14, A12: reporting needs no command and no token. An mcp_tool hook runs under the
+// person's own MCP sign-in, and a command hook's stdout can reach the model's context.
+test("hooks.json has the four run events and only mcp_tool hooks on the plugin's own server", () => {
+  assert.deepEqual(Object.keys(hooksJson().hooks).sort(), RUN_EVENTS);
+  const server = `plugin:${json(".claude-plugin/plugin.json").name}:${Object.keys(json(".mcp.json").mcpServers)[0]}`;
+  assert.equal(server, "plugin:manyhands:manyhands");
+  for (const event of RUN_EVENTS) {
+    assert.equal(hookList(event).length, 1, event);
+    const [hook] = hookList(event);
+    assert.equal(hook.type, "mcp_tool", event);
+    assert.equal(hook.server, server, event);
+    assert.ok(Number.isInteger(hook.timeout) && hook.timeout > 0, `${event}: timeout in whole seconds`);
+  }
+  const raw = readFileSync(join(ROOT, "hooks/hooks.json"), "utf8");
+  assert.doesNotMatch(raw, /"command"|"url"|"headers"|"args"|mhr?_|Bearer/);
+});
+
+// A12, D4, B8: start on the first prompt, the reply text is the summary, a typed subagent
+// adds 1, the end finishes as succeeded. The tool caps the summary, so the hook sends it whole.
+test("each run hook calls its run tool with the documented input", () => {
+  const call = (event) => ({ tool: hookList(event)[0].tool, input: hookList(event)[0].input });
+  assert.deepEqual(call("UserPromptSubmit"), {
+    tool: "manyhands_run_start",
+    input: { session_key: "${session_id}", harness: "claude-code" },
+  });
+  assert.deepEqual(call("Stop"), {
+    tool: "manyhands_run_update",
+    input: { session_key: "${session_id}", summary: "${last_assistant_message}" },
+  });
+  assert.deepEqual(call("SubagentStop"), {
+    tool: "manyhands_run_update",
+    input: { session_key: "${session_id}", subagents_inc: 1 },
+  });
+  assert.deepEqual(call("SessionEnd"), {
+    tool: "manyhands_run_finish",
+    input: { session_key: "${session_id}", status: "succeeded" },
+  });
+});
+
+// The CLI fires helper SubagentStops with no agent_type; the matcher is a regex on agent_type.
+test("SubagentStop hook matches a typed subagent and not an empty agent_type", () => {
+  const re = new RegExp(hooksJson().hooks.SubagentStop[0].matcher);
+  assert.ok(re.test("Explore"));
+  assert.ok(!re.test(""));
+});
+
+// SessionEnd hooks share a 1.5 second budget; a timeout of 1 never delays the exit past it.
+test("SessionEnd hook timeout fits the 1.5 second budget", () => {
+  assert.ok(hookList("SessionEnd")[0].timeout <= 1);
+});
+
+// A19: hooks ship in 0.3.0, so installed copies refresh.
+test("plugin.json is at version 0.3.0 or later and has no hooks key", () => {
+  const plugin = json(".claude-plugin/plugin.json");
+  const [major, minor] = plugin.version.split(".").map(Number);
+  assert.ok(major > 0 || minor >= 3);
+  assert.equal(plugin.hooks, undefined);
+});
+
+// A13: the skill lists the run tools and links a run to a task.
+test("the manyhands skill lists the run tools and the task link line", () => {
+  const text = readFileSync(join(ROOT, "skills/manyhands/SKILL.md"), "utf8").replace(/\s+/g, " ");
+  for (const tool of ["manyhands_run_start", "manyhands_run_update", "manyhands_run_finish",
+    "manyhands_agents", "manyhands_runs", "manyhands_agent_draft"]) {
+    assert.ok(text.includes(`\`${tool}\``), tool);
+  }
+  assert.ok(text.includes("call `manyhands_run_update` with `task` = its identifier and `session_key` = the value of `$CLAUDE_CODE_SESSION_ID`"));
 });
