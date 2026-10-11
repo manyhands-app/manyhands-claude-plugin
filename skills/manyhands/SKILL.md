@@ -44,6 +44,21 @@ anybody else, so never write in the first person as another member.
 - `manyhands_interview_state` and `manyhands_interview_save`: the onboarding interview.
   See the `interview` skill.
 
+## Agents and runs
+
+Plugin hooks report this Claude Code session as one run: they start it on the first
+prompt, update it after every reply, and finish it when the session ends. Do not call
+`manyhands_run_start` or `manyhands_run_finish` for this session.
+
+- When you work on a Manyhands task, call `manyhands_run_update` with `task` = its
+  identifier and `session_key` = the value of `$CLAUDE_CODE_SESSION_ID`
+  (`${CLAUDE_SESSION_ID}`). This links the run to the task.
+- `manyhands_run_start`, `manyhands_run_update` and `manyhands_run_finish`: report a run
+  of an agent that is not this session.
+- `manyhands_agents`: list the HQ's agents with status and run counts.
+- `manyhands_runs`: list recent runs.
+- `manyhands_agent_draft`: propose a new agent. An owner turns it on in the app.
+
 ## Rules
 
 - Do only what the person asked. Do not add tasks they did not mention.

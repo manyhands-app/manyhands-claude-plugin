@@ -1,0 +1,58 @@
+{
+  "description": "Report each Claude Code session to Manyhands as an agent run, through the manyhands MCP server you signed in to with /mcp. No command runs and no token is stored.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:manyhands:manyhands",
+            "tool": "manyhands_run_start",
+            "input": { "session_key": "${session_id}", "harness": "claude-code" },
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:manyhands:manyhands",
+            "tool": "manyhands_run_update",
+            "input": { "session_key": "${session_id}", "summary": "${last_assistant_message}" },
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": ".+",
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:manyhands:manyhands",
+            "tool": "manyhands_run_update",
+            "input": { "session_key": "${session_id}", "subagents_inc": 1 },
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:manyhands:manyhands",
+            "tool": "manyhands_run_finish",
+            "input": { "session_key": "${session_id}", "status": "succeeded" },
+            "timeout": 1
+          }
+        ]
+      }
+    ]
+  }
+}
