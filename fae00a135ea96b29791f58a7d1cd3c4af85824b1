@@ -1,0 +1,95 @@
+# review fae00a135ea9
+
+repo: plugin
+range: refs/remotes/origin/main...task/fm-cf9d-plugin-plugin-run-hooks
+head: fae00a135ea96b29791f58a7d1cd3c4af85824b1
+slug: fm-cf9d-plugin-plugin-run-hooks
+diff_bytes: 10783
+files: 5
+dirty: no
+inflight: (none)
+gate: gate-12b7bd00064ed4039ad35c47568879258f5d9fa2
+class: src
+tier: standard
+tier_reason: class:src lines:179
+diff_lines: 179
+warm: no
+warm_from: -
+warm_delta_bytes: 0
+cold_reason: warm rounds are switched off (PAVILION_REVIEW_WARM=0)
+claude_model: not asked
+claude_verdict: not asked
+claude_blockers: 0
+claude_notes: 0
+gemini_model: gemini-3.6-flash
+gemini_verdict: pass
+gemini_blockers: 0
+gemini_notes: 0
+gemini_thinking: budget:16384
+gemini_toolcalls: 40
+gemini_toolcalls_used: 11
+claude_cost_usd: 0
+claude_prompt_tokens: 0
+claude_output_tokens: 0
+claude_cache_read_tokens: 0
+claude_cache_write_tokens: 0
+claude_attempts: 0
+claude_stop: none
+claude_provider: none
+claude_toolcalls: -
+claude_toolcalls_used: -
+partial: no
+gemini_prompt_tokens: 27684
+gemini_output_tokens: 814
+gemini_thinking_tokens: 2818
+gemini_cost_usd: 0.034383
+blockers: 0
+notes: 0
+verdict: pass
+
+---
+
+## reading: sha=fae00a135ea9 slug=fm-cf9d-plugin-plugin-run-hooks verdict=pass dirty=no class=src warm=no warm_from=- warm_delta_bytes=0 diff_bytes=10783 blockers=0 notes=0 claude_cost_usd=0 claude_prompt_tokens=0 claude_output_tokens=0 claude_cache_read_tokens=0 claude_cache_write_tokens=0 claude_attempts=0 claude_stop=none round=1 round_cap=2 claude_toolcalls=- claude_toolcalls_used=- tier=standard partial=no diff_lines=179 gemini_prompt_tokens=27684 gemini_output_tokens=814 gemini_cost_usd=0.034383
+
+## gemini, gemini-3.6-flash
+
+I reviewed the change across all 5 modified files (`.claude-plugin/plugin.json`, `README.md`, `hooks/hooks.json`, `skills/manyhands/SKILL.md`, and `test/plugin.test.js`). I checked it against the task specification, acceptance criteria AC1–AC12, `.mcp.json`, and `.claude-plugin/marketplace.json`. I ran `grep_repo` across the repository to verify there are no stale references or broken callers of version keys or hook definitions.
+
+### Base Anchor Movements
+Base `origin/main` was `0868a9b3a9e3` (which includes `task/mcp-door-p1-plugin-skill`), so line numbers moved relative to `68ad7d57db49`:
+- `skills/manyhands/SKILL.md`: Anchor `See the interview skill.` moved from line 40 to line 45 (due to `manyhands_interview_*` additions). `## Rules` moved to line 62.
+- `test/plugin.test.js`: End anchor `});` moved from line 46 to line 68 (due to p1 tests added at the end).
+- `.claude-plugin/plugin.json`: Version anchor at line 3 was `"version": "0.2.1"` on base `0868a9b3a9e3`.
+
+### Criteria Verification
+- AC1: `hooks/hooks.json` uses wrapper format `{ "hooks": { ... } }`, defines `SessionEnd`, `Stop`, `SubagentStop`, and `UserPromptSubmit` with one `mcp_tool` hook each using server `plugin:manyhands:manyhands`.
+- AC2: No `command`, `url`, `headers`, `args`, `mh_`, `mhr_`, or `Bearer` tokens exist in `hooks/hooks.json`. Verified by pattern check in `test/plugin.test.js`.
+- AC3: Tool names and input parameters (`session_key`, `harness`, `summary`, `subagents_inc`, `status`) match contract in `hooks/hooks.json` and unit test.
+- AC4: `SubagentStop` matcher is `.+`, which matches typed subagents (e.g., `Explore`) and excludes empty `agent_type` strings.
+- AC5: `SessionEnd` hook timeout is `1`, respecting the 1.5 second SessionEnd budget.
+- AC6: `.claude-plugin/plugin.json` updated to version `0.3.0` without adding a `hooks` key.
+- AC7: `skills/manyhands/SKILL.md` documents `manyhands_run_start`, `manyhands_run_update`, `manyhands_run_finish`, `manyhands_agents`, `manyhands_runs`, and `manyhands_agent_draft`, and includes the task linking instruction with `$CLAUDE_CODE_SESSION_ID`.
+- AC8: `test/plugin.test.js` dash check includes `hooks/hooks.json`.
+- AC9: `README.md` includes the `## Run tracking` section documenting session behavior, character limits, timeout windows, privacy, cost handling, and default HQ selection.
+- AC10: Unrelated files (`.mcp.json`, `.claude-plugin/marketplace.json`, `package.json`, other skills) are unchanged.
+- AC11: Plugin schema validation (`claude plugin validate --strict .`) passes without warnings or errors.
+- AC12: PR is open and ready for review without `automerge` label.
+
+No defects found.
+
+VERDICT: pass
+
+### what it read
+
+  tool 1/40 glob_files({"pattern": "docs/adrs/*.md"})
+  tool 2/40 glob_files({"pattern": "**/*"})
+  tool 3/40 read_file({"path": ".claude-plugin/plugin.json"})
+  tool 4/40 read_file({"path": ".mcp.json"})
+  tool 5/40 read_file({"path": "hooks/hooks.json"})
+  tool 6/40 read_file({"path": "skills/manyhands/SKILL.md"})
+  tool 7/40 read_file({"path": "README.md"})
+  tool 8/40 read_file({"path": "test/plugin.test.js"})
+  tool 9/40 grep_repo({"pattern": "0\\.2\\."})
+  tool 10/40 grep_repo({"pattern": "hooks"})
+  tool 11/40 read_file({"path": ".claude-plugin/marketplace.json"})
+  done. 11 tool call(s), prompt=27684 thoughts=2818 output=814 tokens
