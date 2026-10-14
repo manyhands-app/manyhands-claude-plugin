@@ -30,6 +30,10 @@ refused.
 - Three MCP prompts, which carry the in-app rules word for word:
   `/mcp__manyhands__notes-to-tasks`, `/mcp__manyhands__jot` and `/mcp__manyhands__interview`.
 - Hooks that report each Claude Code session to Manyhands as an agent run. See "Run tracking".
+- For an account with the workforce flag, tools that make agents part of the company: goals and the
+  tasks that count toward them, who an agent reports to, monthly budgets that pause an agent at its
+  limit, routines that make a task for an agent on a schedule, ready-made teams, and the structure
+  of an HQ as a package. See "Agents as part of the company" in the `manyhands` skill.
 
 ## Run tracking
 

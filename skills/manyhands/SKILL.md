@@ -1,6 +1,6 @@
 ---
 name: manyhands
-description: Use when the person asks about their Manyhands HQ (tasks, projects, documents, decisions, notes, comments, contacts) or asks to read or change anything in it. Explains how to use the manyhands_* MCP tools safely.
+description: Use when the person asks about their Manyhands HQ (tasks, projects, documents, decisions, notes, comments, contacts, agents, budgets, routines, goals) or asks to read or change anything in it. Explains how to use the manyhands_* MCP tools safely.
 ---
 
 # Manyhands
@@ -58,6 +58,48 @@ prompt, update it after every reply, and finish it when the session ends. Do not
 - `manyhands_agents`: list the HQ's agents with status and run counts.
 - `manyhands_runs`: list recent runs.
 - `manyhands_agent_draft`: propose a new agent. An owner turns it on in the app.
+
+## Agents as part of the company
+
+These tools are listed only for a person whose account has the workforce flag. Anything that
+changes an agent, a budget, a routine or a team is for an owner of the HQ; the hub refuses
+anyone else with `owner_only`.
+
+- `manyhands_goals`: list the HQ's goals, or read one with the tasks that count toward it. A
+  task counts toward its own goal, else its parent's goal, else its office's goal.
+  `manyhands_get` on a task also returns `goal_chain`: the task, its goal, the office and the
+  company. Link a task to a goal with `manyhands_apply` and the op `set_task_goal`.
+- `manyhands_agent_update`: set an agent's role and who it reports to (a member's email
+  address, or another agent). It cannot switch an agent on or off.
+- `manyhands_budgets`, `manyhands_budget_set`, `manyhands_budget_lift`: the monthly budgets of
+  agents and of all agents together, in whole US cents (5000 is $50.00). At the alert, 80% by
+  default, the agent's manager is told. At 100% the agent finishes its current run and pauses,
+  and an owner switches it on again. A paused agent is fixed by `manyhands_budget_set` with a
+  higher budget and `resume: true`, or by `manyhands_budget_lift`, which lifts the stop for the
+  rest of the month and works once a month.
+- `manyhands_routines`, `manyhands_routine_save`, `manyhands_routine_run`: a routine is a
+  schedule that makes a task for one agent when it is due, in the Agents channel. The schedule
+  is five fields of cron in a time zone (`0 9 * * mon-fri`; `L`, `1W` and `mon#2` also work).
+  Nothing runs on Manyhands' servers: the agent picks its tasks up with
+  `manyhands_agent_work`. `concurrency` says what a due time does while the last task is
+  still going (`queue`, `skip` or `always`), and `catch_up` says what to do after the agent
+  was off (`latest` or `none`).
+- `manyhands_agent_work`: for an agent. Call it when you start, and again when you finish a
+  task. It makes the tasks that are due for you, and returns what is yours to do, each with its
+  goal chain so you know why it matters. To hand a task back: `manyhands_run_start` with the
+  task, do the work, `manyhands_run_finish` with a summary, then `manyhands_apply` with
+  `move_task` to In Review. A person closes it: you cannot mark a task done.
+- `manyhands_teams` and `manyhands_team_install`: ready-made teams of draft agents with their
+  roles, routines and a starting budget. A draft is off and has no token, and an owner
+  switches it on in the app.
+- `manyhands_structure_export` and `manyhands_structure_import`: the structure of an HQ (offices,
+  task types, labels, agents, routines, budgets) as a package, and nothing in it. An import never
+  overwrites.
+
+Before a tool makes something here, call it with `dry_run: true` and tell the person what would
+be made: the next times of a routine, the drafts a team would add, the parts of an import. Then
+call it again without `dry_run` only when they say to. Pass the same `request_id` when you retry
+a call. Never invent a budget amount: ask for it.
 
 ## Rules
 

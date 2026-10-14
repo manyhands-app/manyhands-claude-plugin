@@ -139,3 +139,27 @@ test("the manyhands skill lists the run tools and the task link line", () => {
   }
   assert.ok(text.includes("call `manyhands_run_update` with `task` = its identifier and `session_key` = the value of `$CLAUDE_CODE_SESSION_ID`"));
 });
+
+// ADR 170: the skill says how to use the workforce tools, and the plugin version moved so installed copies refresh.
+test("plugin.json is at version 0.4.0 or later", () => {
+  const [major, minor] = json(".claude-plugin/plugin.json").version.split(".").map(Number);
+  assert.ok(major > 0 || minor >= 4);
+});
+
+test("the manyhands skill lists every workforce tool and the rules for using them", () => {
+  const text = skill("manyhands").replace(/\s+/g, " ");
+  for (const tool of ["manyhands_goals", "manyhands_agent_update", "manyhands_budgets", "manyhands_budget_set", "manyhands_budget_lift",
+    "manyhands_routines", "manyhands_routine_save", "manyhands_routine_run", "manyhands_agent_work", "manyhands_teams",
+    "manyhands_team_install", "manyhands_structure_export", "manyhands_structure_import"]) {
+    assert.ok(text.includes(`\`${tool}\``), tool);
+  }
+  assert.match(text, /`set_task_goal`/);
+  assert.match(text, /call it with `dry_run: true` and tell the person what would be made/);
+  assert.match(text, /Never invent a budget amount: ask for it/);
+  assert.match(text, /A person closes it: you cannot mark a task done/);
+  assert.match(text, /move_task` to In Review/);
+});
+
+test("the README says the workforce tools need the workforce flag", () => {
+  assert.match(readFileSync(join(ROOT, "README.md"), "utf8").replace(/\s+/g, " "), /account with the workforce flag/);
+});
