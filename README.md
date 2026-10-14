@@ -27,6 +27,7 @@ refused.
   - `notes-to-tasks`: turn rough notes into task changes.
   - `jot`: send one line to the right note, or make it a task.
   - `interview`: load your company's work into your HQ, one office at a time.
+  - `startup-os`: the company rooms, and what each tool never does.
 - Three MCP prompts, which carry the in-app rules word for word:
   `/mcp__manyhands__notes-to-tasks`, `/mcp__manyhands__jot` and `/mcp__manyhands__interview`.
 - Hooks that report each Claude Code session to Manyhands as an agent run. See "Run tracking".
@@ -34,6 +35,11 @@ refused.
   tasks that count toward them, who an agent reports to, monthly budgets that pause an agent at its
   limit, routines that make a task for an agent on a schedule, ready-made teams, and the structure
   of an HQ as a package. See "Agents as part of the company" in the `manyhands` skill.
+- For an account with the matching rooms, tools for the company's own admin: cash, spend, bills and
+  runway; the Ledger bookkeeper's drafts; equity and round models; metrics and investor updates;
+  the board pack; contracts, filings and contract bills; hiring and time off; customer feedback;
+  the data room for your investors; and marketing posts and launches. Most of them draft and a
+  person confirms. None sends, posts, publishes or pays. See the `startup-os` skill.
 
 ## Run tracking
 

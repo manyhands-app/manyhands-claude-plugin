@@ -1,6 +1,6 @@
 ---
 name: manyhands
-description: Use when the person asks about their Manyhands HQ (tasks, projects, documents, decisions, notes, comments, contacts, agents, budgets, routines, goals) or asks to read or change anything in it. Explains how to use the manyhands_* MCP tools safely.
+description: Use when the person asks about their Manyhands HQ (tasks, projects, documents, decisions, notes, comments, contacts, agents, budgets, routines, goals, and the company rooms) or asks to read or change anything in it. Explains how to use the manyhands_* MCP tools safely.
 ---
 
 # Manyhands
@@ -83,7 +83,10 @@ anyone else with `owner_only`.
   Nothing runs on Manyhands' servers: the agent picks its tasks up with
   `manyhands_agent_work`. `concurrency` says what a due time does while the last task is
   still going (`queue`, `skip` or `always`), and `catch_up` says what to do after the agent
-  was off (`latest` or `none`).
+  was off (`latest` or `none`). Instead of a schedule, `event` makes a routine follow a dated
+  event: `{ kind: board_meeting, days_before: 7, time: 09:00 }` makes the task 7 days before
+  each scheduled board meeting. It needs the Legal room in the HQ, and the title and body may
+  use `{{event}}` and `{{event_date}}`.
 - `manyhands_agent_work`: for an agent. Call it when you start, and again when you finish a
   task. It makes the tasks that are due for you, and returns what is yours to do, each with its
   goal chain so you know why it matters. To hand a task back: `manyhands_run_start` with the
@@ -100,6 +103,13 @@ Before a tool makes something here, call it with `dry_run: true` and tell the pe
 be made: the next times of a routine, the drafts a team would add, the parts of an import. Then
 call it again without `dry_run` only when they say to. Pass the same `request_id` when you retry
 a call. Never invent a budget amount: ask for it.
+
+## Company rooms
+
+For money, the cap table, metrics, investor updates, the board pack, contracts and filings,
+hiring, customer feedback, the data room for investors and marketing, see the `startup-os`
+skill. Those tools are listed only when the account has the room. Most of them draft and a
+person confirms: none sends, posts, publishes or pays.
 
 ## Rules
 

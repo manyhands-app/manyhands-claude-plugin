@@ -163,3 +163,63 @@ test("the manyhands skill lists every workforce tool and the rules for using the
 test("the README says the workforce tools need the workforce flag", () => {
   assert.match(readFileSync(join(ROOT, "README.md"), "utf8").replace(/\s+/g, " "), /account with the workforce flag/);
 });
+
+// ADRs 167, 169, 171 to 173, 176, 184, 186: the startup-os skill covers the company rooms' tools, and says what each
+// never does. The plugin version moved so installed copies refresh.
+test("plugin.json is at version 0.5.0 or later", () => {
+  const [major, minor] = json(".claude-plugin/plugin.json").version.split(".").map(Number);
+  assert.ok(major > 0 || minor >= 5);
+});
+
+test("the startup-os skill lists every company room tool", () => {
+  const text = skill("startup-os").replace(/\s+/g, " ");
+  for (const tool of [
+    "manyhands_runway", "manyhands_subscriptions", "manyhands_subscription_add", "manyhands_subscription_update",
+    "manyhands_subscription_paid", "manyhands_expense_add", "manyhands_balance_record", "manyhands_bill_add",
+    "manyhands_expense_draft", "manyhands_bill_draft",
+    "manyhands_company", "manyhands_obligation_add", "manyhands_obligation_done", "manyhands_contract_add",
+    "manyhands_contract_bills", "manyhands_board_pack",
+    "manyhands_equity", "manyhands_equity_model", "manyhands_equity_record",
+    "manyhands_metrics", "manyhands_metric_record", "manyhands_investor_updates", "manyhands_investor_update_draft",
+    "manyhands_hiring", "manyhands_hiring_opening_save", "manyhands_hiring_candidate_save", "manyhands_hiring_scorecard",
+    "manyhands_timeoff", "manyhands_timeoff_request", "manyhands_timeoff_decide",
+    "manyhands_feedback", "manyhands_feedback_add", "manyhands_feedback_entry_draft",
+    "manyhands_investor_room", "manyhands_investor_room_document_add", "manyhands_investor_room_link_create",
+    "manyhands_investor_room_link_change", "manyhands_investor_room_question_draft",
+    "manyhands_marketing", "manyhands_marketing_post_add", "manyhands_marketing_post_update", "manyhands_marketing_launch_add",
+  ]) {
+    assert.ok(text.includes(`\`${tool}\``), tool);
+  }
+});
+
+test("the startup-os skill says what the draft and send tools never do", () => {
+  const text = skill("startup-os").replace(/\s+/g, " ");
+  assert.match(text, /Nothing here sends, posts, publishes, pays or decides/);
+  assert.match(text, /call it with `dry_run: true` first|call with `dry_run: true` first/i);
+  assert.match(text, /It never sends the pack and never returns a link/);
+  assert.match(text, /This tool never publishes and never sends/);
+  assert.match(text, /It never files an item and never makes a request/);
+  assert.match(text, /It never publishes\. A person presses Publish in Feedback, Changelog/);
+  assert.match(text, /No tool sends an answer/);
+  assert.match(text, /They never schedule, post or delete/);
+  assert.match(text, /No hiring tool makes, sends or decides an offer/);
+  assert.match(text, /It never marks a bill paid/);
+  assert.match(text, /Never invent a deadline/);
+  assert.match(text, /`confirm: true`/);
+});
+
+test("the startup-os skill keeps Pavilion's investor room apart from the workspace's data room", () => {
+  const text = skill("startup-os").replace(/\s+/g, " ");
+  assert.match(text, /It is not Pavilion's investor room: `manyhands_dataroom_add_investor` is that one/);
+});
+
+test("the manyhands skill points at startup-os and knows event routines", () => {
+  const text = skill("manyhands").replace(/\s+/g, " ");
+  assert.match(text, /see the `startup-os` skill/);
+  assert.match(text, /`event` makes a routine follow a dated event/);
+  assert.match(text, /board_meeting/);
+});
+
+test("the README lists the startup-os skill", () => {
+  assert.match(readFileSync(join(ROOT, "README.md"), "utf8"), /`startup-os`: /);
+});
