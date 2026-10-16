@@ -68,7 +68,9 @@ anyone else with `owner_only`.
 - `manyhands_goals`: list the HQ's goals, or read one with the tasks that count toward it. A
   task counts toward its own goal, else its parent's goal, else its office's goal.
   `manyhands_get` on a task also returns `goal_chain`: the task, its goal, the office and the
-  company. Link a task to a goal with `manyhands_apply` and the op `set_task_goal`.
+  company. Link a task to a goal with `manyhands_apply` and the op `set_task_goal`. Mark a
+  goal achieved or dropped (or active again) with the op `set_goal_status`, only when the
+  person says so.
 - `manyhands_agent_update`: set an agent's role and who it reports to (a member's email
   address, or another agent). It cannot switch an agent on or off.
 - `manyhands_budgets`, `manyhands_budget_set`, `manyhands_budget_lift`: the monthly budgets of

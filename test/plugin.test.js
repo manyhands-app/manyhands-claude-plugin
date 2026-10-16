@@ -154,6 +154,7 @@ test("the manyhands skill lists every workforce tool and the rules for using the
     assert.ok(text.includes(`\`${tool}\``), tool);
   }
   assert.match(text, /`set_task_goal`/);
+  assert.match(text, /`set_goal_status`/);
   assert.match(text, /call it with `dry_run: true` and tell the person what would be made/);
   assert.match(text, /Never invent a budget amount: ask for it/);
   assert.match(text, /A person closes it: you cannot mark a task done/);
