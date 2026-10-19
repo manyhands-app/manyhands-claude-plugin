@@ -26,9 +26,17 @@ anybody else, so never write in the first person as another member.
 
 ## Changing
 
-- `manyhands_apply`: 1 to 50 ops in one transaction (create, update, move or cancel a
-  task, comment on a task, create or update a project, create a contact). Put what the
-  person asked for in `message`.
+- `manyhands_apply`: 1 to 50 ops in one transaction. Put what the person asked for in
+  `message`. The tool's description lists every op and its args. The ops:
+  - Tasks: create, update (any field, including parent, channel, contact, `blocked_by`,
+    `waiting_for`, `reveal_on` and `private`), move, cancel, comment, link to a goal.
+  - Projects and documents: create and update. Archive one with `is_archived: true`.
+  - Contacts: create and update.
+  - Decisions: `create_decision` raises a question; `update_decision` changes an open one.
+  - Task settings: `create_task_setting` adds a label, a status or a type when none fits.
+  - Boards and goal status.
+- Nothing is deleted from here. Cancel a task, or archive a project or a document. All of
+  these can be undone.
 - `#n` lets a later op name a row an earlier op in the same call made. Use it only where
   the arg's schema says so, such as `blocked_by` and `contact` on `create_task`. It counts
   from 0: `#0` is the first op, and `n` must be an earlier op that made that kind of row.
@@ -129,4 +137,4 @@ person confirms: none sends, posts, publishes or pays.
   reference so the team can trace it.
 - If an error says a capability is off, tell the person which setting to turn on in
   Manyhands. Do not retry.
-- Decisions cannot be locked from here. Send the person to the app for that.
+- Decisions cannot be locked in from here. Send the person to the app for that.
