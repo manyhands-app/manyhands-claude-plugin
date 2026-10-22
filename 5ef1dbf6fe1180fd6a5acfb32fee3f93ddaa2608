@@ -1,0 +1,88 @@
+# review 5ef1dbf6fe11
+
+repo: plugin
+range: 8a22c47228763c855cc0a2b5e55546cc70ee952b...5ef1dbf6fe1180fd6a5acfb32fee3f93ddaa2608
+head: 5ef1dbf6fe1180fd6a5acfb32fee3f93ddaa2608
+slug: pr-8
+diff_bytes: 4354
+files: 3
+dirty: no
+inflight: task/apply-edit-anything task/paperclip-loop task/workforce-plugin
+gate: gate-dfddc66d16b4a6c374c61a21baefeedae25e2d79
+class: src
+tier: standard
+tier_reason: class:src lines:32
+diff_lines: 32
+warm: no
+warm_from: -
+warm_delta_bytes: 0
+cold_reason: warm rounds are switched off (PAVILION_REVIEW_WARM=0)
+claude_model: not asked
+claude_verdict: not asked
+claude_blockers: 0
+claude_notes: 0
+gemini_model: gemini-3.6-flash
+gemini_verdict: pass
+gemini_blockers: 0
+gemini_notes: 0
+gemini_thinking: budget:16384
+gemini_toolcalls: 40
+gemini_toolcalls_used: 18
+claude_cost_usd: 0
+claude_prompt_tokens: 0
+claude_output_tokens: 0
+claude_cache_read_tokens: 0
+claude_cache_write_tokens: 0
+claude_attempts: 0
+claude_stop: none
+claude_provider: none
+claude_toolcalls: -
+claude_toolcalls_used: -
+partial: no
+gemini_prompt_tokens: 22627
+gemini_output_tokens: 128
+gemini_thinking_tokens: 5061
+gemini_cost_usd: 0.036429
+preexisting: 0
+security_scan: on
+security_blockers: 0
+security_paths: 0
+blockers: 0
+notes: 0
+verdict: pass
+
+---
+
+## reading: sha=5ef1dbf6fe11 slug=pr-8 verdict=pass dirty=no class=src warm=no warm_from=- warm_delta_bytes=0 diff_bytes=4354 blockers=0 notes=0 claude_cost_usd=0 claude_prompt_tokens=0 claude_output_tokens=0 claude_cache_read_tokens=0 claude_cache_write_tokens=0 claude_attempts=0 claude_stop=none round=1 round_cap=2 claude_toolcalls=- claude_toolcalls_used=- tier=standard partial=no diff_lines=32 gemini_prompt_tokens=22627 gemini_output_tokens=128 gemini_cost_usd=0.036429 preexisting=0 security=0
+
+## gemini, gemini-3.6-flash
+
+> Reviewed changes in .claude-plugin/plugin.json, skills/manyhands/SKILL.md, and test/plugin.test.js. Verified that skills documentation for asks, wakes, attach, run events, and unroutable blocked tasks accurately reflects pavilion-brain ADR 262 requirements, version bump to 0.7.0 is synced, and new assertions in test/plugin.test.js pass with no dash rule or formatting violations.
+
+VERDICT: pass
+
+### what it read
+
+  tool 1/40 glob_files({"pattern": "docs/adrs/*"})
+  tool 2/40 glob_files({"pattern": "*"})
+  tool 3/40 read_file({"path": "skills/manyhands/SKILL.md"})
+  tool 4/40 read_file({"path": "test/plugin.test.js"})
+  tool 5/40 grep_repo({"pattern": "0\\.6\\.0|0\\.7\\.0"})
+  tool 6/40 grep_repo({"pattern": "version"})
+  tool 7/40 read_file({"path": "package.json"})
+  tool 8/40 read_file({"path": ".claude-plugin/marketplace.json"})
+  tool 9/40 read_file({"path": "README.md"})
+  tool 10/40 grep_repo({"pattern": "manyhands_ask"})
+  tool 11/40 grep_repo({"pattern": "manyhands_attach|blocked_unroutable|wakes"})
+  tool 12/40 grep_repo({"pattern": "manyhands_attach"})
+  tool 13/40 grep_repo({"pattern": "blocked_unroutable"})
+  tool 14/40 grep_repo({"pattern": "wakes"})
+  tool 15/40 read_file({"path": "docs/retro/2026-W39.md"})
+  tool 16/40 read_file({"path": "docs/retro/2026-W41.md"})
+  tool 17/40 read_file({"path": "hooks/hooks.json"})
+  tool 18/40 grep_repo({"pattern": "Blocked"})
+  done. 18 tool call(s), prompt=22627 thoughts=5061 output=128 tokens
+
+## security scan
+
+Nothing found: no secret in an added line, no new lockfile advisory, no structural rule on an added line.
