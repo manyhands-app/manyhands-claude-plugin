@@ -1,6 +1,6 @@
 ---
 name: manyhands
-description: Use when the person asks about their Manyhands HQ (tasks, projects, documents, decisions, notes, comments, contacts, agents, budgets, routines, goals) or asks to read or change anything in it. Explains how to use the manyhands_* MCP tools safely.
+description: Use when the person asks about their Manyhands HQ (tasks, projects, documents, decisions, notes, comments, contacts, agents, budgets, routines, goals, and the company rooms) or asks to read or change anything in it. Explains how to use the manyhands_* MCP tools safely.
 ---
 
 # Manyhands
@@ -26,9 +26,17 @@ anybody else, so never write in the first person as another member.
 
 ## Changing
 
-- `manyhands_apply`: 1 to 50 ops in one transaction (create, update, move or cancel a
-  task, comment on a task, create or update a project, create a contact). Put what the
-  person asked for in `message`.
+- `manyhands_apply`: 1 to 50 ops in one transaction. Put what the person asked for in
+  `message`. The tool's description lists every op and its args. The ops:
+  - Tasks: create, update (any field, including parent, channel, contact, `blocked_by`,
+    `waiting_for`, `reveal_on` and `private`), move, cancel, comment, link to a goal.
+  - Projects and documents: create and update. Archive one with `is_archived: true`.
+  - Contacts: create and update.
+  - Decisions: `create_decision` raises a question; `update_decision` changes an open one.
+  - Task settings: `create_task_setting` adds a label, a status or a type when none fits.
+  - Boards and goal status.
+- Nothing is deleted from here. Cancel a task, or archive a project or a document. All of
+  these can be undone.
 - `#n` lets a later op name a row an earlier op in the same call made. Use it only where
   the arg's schema says so, such as `blocked_by` and `contact` on `create_task`. It counts
   from 0: `#0` is the first op, and `n` must be an earlier op that made that kind of row.
@@ -71,7 +79,9 @@ anyone else with `owner_only`.
 - `manyhands_goals`: list the HQ's goals, or read one with the tasks that count toward it. A
   task counts toward its own goal, else its parent's goal, else its office's goal.
   `manyhands_get` on a task also returns `goal_chain`: the task, its goal, the office and the
-  company. Link a task to a goal with `manyhands_apply` and the op `set_task_goal`.
+  company. Link a task to a goal with `manyhands_apply` and the op `set_task_goal`. Mark a
+  goal achieved or dropped (or active again) with the op `set_goal_status`, only when the
+  person says so.
 - `manyhands_agent_update`: set an agent's role and who it reports to (a member's email
   address, or another agent). It cannot switch an agent on or off.
 - `manyhands_budgets`, `manyhands_budget_set`, `manyhands_budget_lift`: the monthly budgets of
@@ -86,7 +96,10 @@ anyone else with `owner_only`.
   Nothing runs on Manyhands' servers: the agent picks its tasks up with
   `manyhands_agent_work`. `concurrency` says what a due time does while the last task is
   still going (`queue`, `skip` or `always`), and `catch_up` says what to do after the agent
-  was off (`latest` or `none`).
+  was off (`latest` or `none`). Instead of a schedule, `event` makes a routine follow a dated
+  event: `{ kind: board_meeting, days_before: 7, time: 09:00 }` makes the task 7 days before
+  each scheduled board meeting. It needs the Legal room in the HQ, and the title and body may
+  use `{{event}}` and `{{event_date}}`.
 - `manyhands_agent_work`: for an agent. Call it when you start, and again when you finish a
   task. It makes the tasks that are due for you, and returns what is yours to do, each with its
   goal chain so you know why it matters. To hand a task back: `manyhands_run_start` with the
@@ -120,6 +133,13 @@ be made: the next times of a routine, the drafts a team would add, the parts of 
 call it again without `dry_run` only when they say to. Pass the same `request_id` when you retry
 a call. Never invent a budget amount: ask for it.
 
+## Company rooms
+
+For money, the cap table, metrics, investor updates, the board pack, contracts and filings,
+hiring, customer feedback, the data room for investors and marketing, see the `startup-os`
+skill. Those tools are listed only when the account has the room. Most of them draft and a
+person confirms: none sends, posts, publishes or pays.
+
 ## Rules
 
 - Do only what the person asked. Do not add tasks they did not mention.
@@ -136,4 +156,4 @@ a call. Never invent a budget amount: ask for it.
   reference so the team can trace it.
 - If an error says a capability is off, tell the person which setting to turn on in
   Manyhands. Do not retry.
-- Decisions cannot be locked from here. Send the person to the app for that.
+- Decisions cannot be locked in from here. Send the person to the app for that.
