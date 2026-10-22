@@ -225,7 +225,7 @@ test("the README lists the startup-os skill", () => {
   assert.match(readFileSync(join(ROOT, "README.md"), "utf8"), /`startup-os`: /);
 });
 
-// pavilion-brain ADR 260: an agent asks instead of guessing, and a Blocked task names its way out.
+// pavilion-brain ADR 262: an agent asks instead of guessing, and a Blocked task names its way out.
 test("the main skill teaches asks, wakes, attach and run events", () => {
   const main = skill("manyhands").replace(/\s+/g, " ");
   for (const tool of ["manyhands_ask", "manyhands_answer", "manyhands_asks", "manyhands_attach"]) assert.match(main, new RegExp("`" + tool + "`"));
