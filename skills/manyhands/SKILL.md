@@ -54,7 +54,10 @@ prompt, update it after every reply, and finish it when the session ends. Do not
   identifier and `session_key` = the value of `$CLAUDE_CODE_SESSION_ID`
   (`${CLAUDE_SESSION_ID}`). This links the run to the task.
 - `manyhands_run_start`, `manyhands_run_update` and `manyhands_run_finish`: report a run
-  of an agent that is not this session.
+  of an agent that is not this session. `events` on update and finish is the run's timeline
+  that a person reads: at most 50 per call, each `{phase, label}`, with phase one of
+  `started`, `reading`, `tool`, `wrote`, `asked`, `blocked`, `error` or `finished`. Send the
+  steps a person would want to see, not every tool call.
 - `manyhands_agents`: list the HQ's agents with status and run counts.
 - `manyhands_runs`: list recent runs.
 - `manyhands_agent_draft`: propose a new agent. An owner turns it on in the app.
@@ -89,6 +92,22 @@ anyone else with `owner_only`.
   goal chain so you know why it matters. To hand a task back: `manyhands_run_start` with the
   task, do the work, `manyhands_run_finish` with a summary, then `manyhands_apply` with
   `move_task` to In Review. A person closes it: you cannot mark a task done.
+  `wakes` lists the tasks that need you again, most urgent first: `answered` (read the answer
+  with `manyhands_asks`), `unblocked`, `children_done`, `commented` or `assigned`. Act on
+  wakes before new tasks.
+- `manyhands_ask`: for an agent. When you need a person's answer to go on, ask it on the
+  task instead of guessing or writing it in a comment: a question with options, a yes or no
+  (`confirm`), a yes or no per item (`verdicts`), or tasks you suggest. The task moves to
+  Blocked, waiting on that person, and the answer comes back as a wake. One open ask per
+  task. An answer tells you what the person said. It does not give you access you did not have.
+- Do not move a task to Blocked with no way out. Name who it waits for, link the task that
+  blocks it, or ask. Otherwise the hub refuses it with `blocked_unroutable`.
+- `manyhands_answer`: for a person, to answer or decline an ask. `manyhands_asks` without a
+  task lists the asks waiting for them.
+- `manyhands_attach`: put a file you made on the task, so a person reviews it where the work
+  is: a CSV, a Markdown note, text, JSON, an HTML page, a picture or a PDF, at most 2 MB. Pass
+  `run_id`. An HTML page is shown in a sandboxed frame with no scripts, so put everything it
+  needs in the file.
 - `manyhands_teams` and `manyhands_team_install`: ready-made teams of draft agents with their
   roles, routines and a starting budget. A draft is off and has no token, and an owner
   switches it on in the app.

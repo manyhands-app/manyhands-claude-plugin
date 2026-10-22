@@ -163,3 +163,12 @@ test("the manyhands skill lists every workforce tool and the rules for using the
 test("the README says the workforce tools need the workforce flag", () => {
   assert.match(readFileSync(join(ROOT, "README.md"), "utf8").replace(/\s+/g, " "), /account with the workforce flag/);
 });
+
+// pavilion-brain ADR 260: an agent asks instead of guessing, and a Blocked task names its way out.
+test("the main skill teaches asks, wakes, attach and run events", () => {
+  const main = skill("manyhands").replace(/\s+/g, " ");
+  for (const tool of ["manyhands_ask", "manyhands_answer", "manyhands_asks", "manyhands_attach"]) assert.match(main, new RegExp("`" + tool + "`"));
+  assert.match(main, /`wakes` lists the tasks that need you again/);
+  assert.match(main, /blocked_unroutable/);
+  assert.match(main, /sandboxed frame with no scripts/);
+});
