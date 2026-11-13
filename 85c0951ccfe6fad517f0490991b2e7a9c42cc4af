@@ -1,0 +1,57 @@
+# review 85c0951ccfe6
+
+repo: plugin
+range: 5ef1dbf6fe1180fd6a5acfb32fee3f93ddaa2608...85c0951ccfe6fad517f0490991b2e7a9c42cc4af
+head: 85c0951ccfe6fad517f0490991b2e7a9c42cc4af
+slug: pr-9
+diff_bytes: 3306
+files: 5
+dirty: no
+inflight: task/mcp-host task/paperclip-loop task/workforce-plugin
+gate: gate-091d0a3c950b7e578b1f6b8a8fb03acd1b7db881
+class: src
+tier: standard
+tier_reason: class:src lines:16
+diff_lines: 16
+warm: no
+warm_from: -
+warm_delta_bytes: 0
+cold_reason: warm rounds are switched off (PAVILION_REVIEW_WARM=0)
+claude_model: us.anthropic.claude-sonnet-5
+claude_verdict: pass
+claude_blockers: 0
+claude_notes: 0
+claude_cost_usd: 0.286807
+claude_prompt_tokens: 8
+claude_output_tokens: 2279
+claude_cache_read_tokens: 155463
+claude_cache_write_tokens: 58227
+claude_attempts: 1
+claude_stop: success
+claude_provider: firstParty
+claude_toolcalls: 25
+claude_toolcalls_used: 7
+partial: no
+preexisting: 0
+security_scan: on
+security_blockers: 0
+security_paths: 0
+blockers: 0
+notes: 0
+verdict: pass
+
+---
+
+## reading: sha=85c0951ccfe6 slug=pr-9 verdict=pass dirty=no class=src warm=no warm_from=- warm_delta_bytes=0 diff_bytes=3306 blockers=0 notes=0 claude_cost_usd=0.286807 claude_prompt_tokens=8 claude_output_tokens=2279 claude_cache_read_tokens=155463 claude_cache_write_tokens=58227 claude_attempts=1 claude_stop=success round=1 round_cap=2 claude_toolcalls=25 claude_toolcalls_used=7 tier=standard partial=no diff_lines=16 preexisting=0 security=0
+
+## claude, us.anthropic.claude-sonnet-5
+
+> Reviewed the full 5-file diff (marketplace.json, plugin.json, .mcp.json, README.md, test/plugin.test.js) renaming hub.pavilion.markets to hub.manyhands.so and the owner/author name to Manyhands, matching the commit message's stated scope (brain ADR 411/412, Pavilion closing). Grepped the whole repo for "hub.pavilion.markets" / "pavilion.markets" post-change and found zero remaining references, so the rename is complete and consistent with the updated test. The one leftover "Pavilion" string, in skills/startup-os/SKILL.md ("not Pavilion's investor room") and LICENSE's copyright holder, refers to a different legacy concept/entity than the hub URL and is outside this commit's stated scope (MCP server, README, plugin author), so not a defect of this change. No ADRs exist in this repo (docs/adrs/ is empty/absent; the decision records cited live in the brain repo per the commit message) and no code outside the 5 files references the renamed strings, so no semantic-conflict risk with the other open task branches was found from what's touched here. Diff is minimal (8 insertions/8 deletions) with nothing beyond what the rename needs.
+
+REPAIRS: no
+
+VERDICT: pass
+
+## security scan
+
+Nothing found: no secret in an added line, no new lockfile advisory, no structural rule on an added line.
