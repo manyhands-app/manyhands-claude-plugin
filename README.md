@@ -19,7 +19,7 @@ refused.
 
 ## What you get
 
-- The `manyhands` MCP server (`https://hub.pavilion.markets/mcp`): list, read and search
+- The `manyhands` MCP server (`https://hub.manyhands.so/mcp`): list, read and search
   tasks, documents, decisions and projects; apply task and project changes; undo them;
   comment; list and add to your private notes; run the onboarding interview.
 - Skills that tell Claude when and how to use those tools:
@@ -65,12 +65,12 @@ prompt: run `/mcp` and sign in. To stop reporting, disable the plugin with `/plu
 
 ## Claude.ai and Claude Desktop
 
-These do not use plugins. Add `https://hub.pavilion.markets/mcp` as a custom connector
+These do not use plugins. Add `https://hub.manyhands.so/mcp` as a custom connector
 in Settings, then sign in.
 
 ## Without the plugin
 
-`claude mcp add --transport http manyhands https://hub.pavilion.markets/mcp` gives you the
+`claude mcp add --transport http manyhands https://hub.manyhands.so/mcp` gives you the
 tools without the skills.
 
 ## Development

@@ -2,7 +2,7 @@
   "mcpServers": {
     "manyhands": {
       "type": "http",
-      "url": "https://hub.pavilion.markets/mcp"
+      "url": "https://hub.manyhands.so/mcp"
     }
   }
 }

@@ -23,7 +23,7 @@ test("plugin.json and marketplace.json name the same plugin", () => {
 test(".mcp.json points at the hub's MCP door over HTTP", () => {
   const { mcpServers } = json(".mcp.json");
   assert.deepEqual(Object.keys(mcpServers), ["manyhands"]);
-  assert.deepEqual(mcpServers.manyhands, { type: "http", url: "https://hub.pavilion.markets/mcp" });
+  assert.deepEqual(mcpServers.manyhands, { type: "http", url: "https://hub.manyhands.so/mcp" });
 });
 
 test("every skill has a SKILL.md whose name matches its directory", () => {

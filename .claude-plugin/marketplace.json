@@ -1,6 +1,6 @@
 {
   "name": "manyhands",
-  "owner": { "name": "Pavilion Markets", "url": "https://hub.pavilion.markets" },
+  "owner": { "name": "Manyhands", "url": "https://hub.manyhands.so" },
   "metadata": { "description": "The Manyhands plugin for Claude Code." },
   "plugins": [
     {
