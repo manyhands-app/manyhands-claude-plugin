@@ -1,0 +1,42 @@
+# review 5e48f0efa427
+
+repo: plugin
+range: 85c0951ccfe6..5e48f0efa427
+head: 5e48f0efa427144c401e3f901ec663afd1bb3613
+slug: pr-10
+diff_bytes: 2517
+files: 3
+dirty: no
+inflight: -
+gate: trivial-by-checks
+class: docs
+tier: trivial
+tier_reason: trivial
+diff_lines: 37
+warm: no
+warm_from: -
+warm_delta_bytes: -
+cold_reason: -
+claude_model: not asked
+claude_verdict: not asked
+claude_blockers: 0
+claude_notes: 0
+claude_cost_usd: -
+claude_prompt_tokens: -
+claude_output_tokens: -
+claude_cache_read_tokens: -
+claude_cache_write_tokens: -
+claude_attempts: 0
+claude_stop: -
+claude_provider: -
+claude_toolcalls: -
+claude_toolcalls_used: -
+partial: no
+blockers: 0
+notes: 0
+verdict: trivial-by-checks
+
+---
+
+No model read this change. It was classed trivial by `repo_trivial_class` and landed on
+the repo's own checks: trivial. See ADR 073.
