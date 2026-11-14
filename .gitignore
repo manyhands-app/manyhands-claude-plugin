@@ -1,2 +1,4 @@
 node_modules/
 .DS_Store
+# Landing notes are written by the brain and stay on the box (agent-repos.sh, repo_field retro).
+docs/retro/
